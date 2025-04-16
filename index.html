@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Chat Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>ember.ai</h1>
+        </div>
+        <div class="chat-history" id="chatHistory">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="input-area">
+            <div class="model-toggle">
+                <label for="model-selector">Model:</label>
+                <select id="model-selector">
+                    <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                    <option value="o3-mini">o3-mini (high)</option>
+                    <option value="gpt-4o-mini-search-preview">gpt-4o-mini-search-preview</option>
+                </select>
+            </div>
+            <div class="message-input">
+                <textarea id="userInput" placeholder="Type your message here..."></textarea>
+                <button id="sendButton">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dist/app.js"></script>
+</body>
+</html>
