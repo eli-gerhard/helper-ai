@@ -32,6 +32,14 @@ class ChatResponse(BaseModel):
     message: Message
     error: Optional[str] = None
 
+@app.get("/")
+async def root():
+    return {"message": "API is working!"}
+
+@app.get("/test")
+async def test():
+    return {"message": "API is working!"}
+
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
@@ -58,10 +66,5 @@ async def chat(request: ChatRequest):
 
 # For local development
 if __name__ == "__main__":
-    import uvicorn
     # uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-@app.get("/test")
-async def test():
-    return {"message": "API is working!"}

@@ -57,13 +57,15 @@ class LLMClient:
             print(f"Calling OpenAI API with model: {model}")
             print(f"Using API Key: {Config.OPENAI_API_KEY[:5]}..." if Config.OPENAI_API_KEY else "No API key found!")
             
-            response = await self.openai_client.chat.completions.create(
+            # For newer OpenAI library (v1.0.0+)
+            response = self.openai_client.chat.completions.create(
                 model=model,
                 messages=messages,
-                max_tokens=Config.MAX_TOKENS,
-                temperature=Config.TEMPERATURE
+                max_completion_tokens=Config.MAX_COMPLETION_TOKENS,
+                # temperature=Config.TEMPERATURE
             )
             
+            # No need to await here in newer versions
             return {
                 "message": {
                     "role": "assistant",

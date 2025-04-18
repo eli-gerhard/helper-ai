@@ -11,5 +11,5 @@ class Config:
     
     # Default settings
     DEFAULT_MODEL = "gpt-4.1-mini"
-    MAX_TOKENS = 2000
-    TEMPERATURE = 0.7
+    MAX_COMPLETION_TOKENS = 2000
+    # TEMPERATURE = 0.7
