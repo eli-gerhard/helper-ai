@@ -1,7 +1,7 @@
 import { ChatRequest, ChatResponse, Message } from './types';
 
 export class ChatService {
-    private readonly apiUrl = '/api/chat';
+    private readonly apiUrl = 'http://localhost:8000/api/chat';
 
     async sendMessage(messages: Message[], model: string): Promise<ChatResponse> {
         try {

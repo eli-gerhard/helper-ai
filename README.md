@@ -1,11 +1,11 @@
 # LLM Chat Interface
 
-A modular chat interface that uses the OpenAI API and Anthropic API for backend processing, similar to popular LLM chat interfaces like ChatGPT, Claude, or Gemini.
+A modular chat interface that uses the OpenAI API for backend processing, similar to popular LLM chat interfaces like ChatGPT, Claude, or Gemini.
 
 ## Features
 
 - Clean, modern UI similar to popular LLM chat interfaces
-- Toggle between different models: gpt-4.1-mini, o3-mini (high), and gpt-4o-mini-search-preview
+- Toggle between different models: gpt-4.1-mini, o4-mini (high), and gpt-4o-mini-search-preview
 - Markdown support in messages (code blocks, bold, italic)
 - Error handling and loading indicators
 
@@ -22,7 +22,7 @@ A modular chat interface that uses the OpenAI API and Anthropic API for backend 
 ### Backend (Python)
 
 - `backend/app.py` - FastAPI application
-- `backend/openai_client.py` - Module for interacting with the OpenAI and Anthropic APIs
+- `backend/openai_client.py` - Module for interacting with the OpenAI API
 - `backend/config.py` - Configuration settings
 
 ## Setup Instructions
@@ -32,7 +32,6 @@ A modular chat interface that uses the OpenAI API and Anthropic API for backend 
 - Node.js and npm
 - Python 3.8+
 - OpenAI API key
-- Anthropic API key (for o3-mini model)
 
 ### Backend Setup
 
@@ -45,7 +44,7 @@ A modular chat interface that uses the OpenAI API and Anthropic API for backend 
 
 2. Install dependencies:
    ```
-   pip install fastapi uvicorn openai anthropic python-dotenv
+   pip install fastapi uvicorn openai python-dotenv
    ```
 
 3. Create a `.env` file with your API keys (copy from .env.template):
@@ -89,6 +88,6 @@ A modular chat interface that uses the OpenAI API and Anthropic API for backend 
 
 ## Notes
 
-- The o3-mini model uses the Anthropic API, while the other models use the OpenAI API.
+- The o4-mini model uses the Anthropic API, while the other models use the OpenAI API.
 - The model names should correspond to actual available models in the respective APIs.
 - For production use, you should add proper authentication and rate limiting.
