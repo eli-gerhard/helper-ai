@@ -32,20 +32,46 @@ class LLMClient:
                 }
             }
     
+    # async def _call_openai_api(self, messages: List[Dict[str, str]], model: str) -> Dict[str, Any]:
+    #     """
+    #     Call the OpenAI API to generate a response.
+    #     """
+    #     response = await self.openai_client.chat.completions.create(
+    #         model=model,
+    #         messages=messages,
+    #         max_tokens=Config.MAX_TOKENS,
+    #         temperature=Config.TEMPERATURE
+    #     )
+        
+    #     return {
+    #         "message": {
+    #             "role": "assistant",
+    #             "content": response.choices[0].message.content
+    #         }
+    #     }
     async def _call_openai_api(self, messages: List[Dict[str, str]], model: str) -> Dict[str, Any]:
         """
         Call the OpenAI API to generate a response.
         """
-        response = await self.openai_client.chat.completions.create(
-            model=model,
-            messages=messages,
-            max_tokens=Config.MAX_TOKENS,
-            temperature=Config.TEMPERATURE
-        )
-        
-        return {
-            "message": {
-                "role": "assistant",
-                "content": response.choices[0].message.content
+        try:
+            print(f"Calling OpenAI API with model: {model}")
+            print(f"Using API Key: {Config.OPENAI_API_KEY[:5]}..." if Config.OPENAI_API_KEY else "No API key found!")
+            
+            response = await self.openai_client.chat.completions.create(
+                model=model,
+                messages=messages,
+                max_tokens=Config.MAX_TOKENS,
+                temperature=Config.TEMPERATURE
+            )
+            
+            return {
+                "message": {
+                    "role": "assistant",
+                    "content": response.choices[0].message.content
+                }
             }
-        }
+        except Exception as e:
+            print(f"ERROR in OpenAI API call: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            raise

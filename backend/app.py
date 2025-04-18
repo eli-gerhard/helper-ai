@@ -58,4 +58,10 @@ async def chat(request: ChatRequest):
 
 # For local development
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    import uvicorn
+    # uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+@app.get("/test")
+async def test():
+    return {"message": "API is working!"}
