@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Send, Menu } from 'lucide-react';
 import { Message, ModelType } from './types';
 import { ChatService } from './ChatService';
 
@@ -131,13 +132,6 @@ const App: React.FC = () => {
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
-
-  // Menu icon SVG component
-  const MenuIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-  );
   
   return (
     <div className="flex h-screen bg-amber-50 relative overflow-hidden">
@@ -149,13 +143,13 @@ const App: React.FC = () => {
       >
         {isSidebarOpen && (
           <div className="h-full overflow-y-auto">
-            <div className="py-[10px] px-7 border-b border-amber-300 flex items-center">
+            <div className="py-[10px] px-5 border-b border-amber-300 flex items-center">
               <button 
                 onClick={toggleSidebar} 
                 className="p-2 rounded-md hover:bg-amber-300 transition-colors"
                 aria-label="Close menu"
               >
-                <MenuIcon />
+                <Menu />
               </button>
             </div>
             <nav className="p-4">
@@ -190,10 +184,10 @@ const App: React.FC = () => {
             {!isSidebarOpen && (
               <button 
                 onClick={toggleSidebar}
-                className="p-4 hover:bg-amber-200 transition-colors"
+                className="absolute p-2 m-2 rounded-md hover:bg-amber-200 transition-colors"
                 aria-label="Toggle menu"
               >
-                <MenuIcon />
+                <Menu />
               </button>
             )}
             
@@ -227,44 +221,41 @@ const App: React.FC = () => {
               </div>
             ))}
           </div>
-          
-          {/* Input area - Full width background, content constrained */}
-          <div className="w-full bg-amber-100 border-t border-amber-200">
-            <div className="max-w-4xl mx-auto p-5">
-              <div className="mb-2.5">
-                <label htmlFor="model-selector" className="mr-2">Model:</label>
-                <select 
-                  id="model-selector"
-                  className="p-2 rounded border border-gray-300 bg-white text-sm"
-                  value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value as ModelType)}
-                >
-                  <option value="gpt-4.1-mini-2025-04-14">Standard GPT</option>
-                  <option value="o4-mini-2025-04-16">Reasoning</option>
-                  <option value="gpt-4o-mini-search-preview-2025-03-11">Search GPT</option>
-                </select>
-              </div>
+        </div>
+
+        {/* Input area - Full width background, content constrained */}
+        <div className="w-full bg-amber-100 border-t border-amber-200">
+          <div className="max-w-4xl mx-auto p-5">
+            <div className="mb-2.5">
+              <label htmlFor="model-selector" className="mr-2">Model:</label>
+              <select 
+                id="model-selector"
+                className="p-2 rounded border border-gray-300 bg-white text-sm"
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value as ModelType)}
+              >
+                <option value="gpt-4.1-mini-2025-04-14">Standard GPT</option>
+                <option value="o4-mini-2025-04-16">Reasoning</option>
+                <option value="gpt-4o-mini-search-preview-2025-03-11">Search GPT</option>
+              </select>
+            </div>
+            
+            <div className="flex gap-2.5 items-end">
+              <textarea 
+                className="flex-1 p-3 border border-gray-300 rounded resize-none h-[60px] text-base max-h-[200px]"
+                placeholder="Type your message here..."
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onInput={handleTextareaInput}
+              />
               
-              <div className="flex gap-2.5 items-end">
-                <textarea 
-                  className="flex-1 p-3 border border-gray-300 rounded resize-none h-[60px] text-base max-h-[200px]"
-                  placeholder="Type your message here..."
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  onInput={handleTextareaInput}
-                />
-                
-                <button 
-                  className="p-3.5 bg-red-600 text-white border-none rounded cursor-pointer flex items-center justify-center hover:bg-red-900"
-                  onClick={sendMessage}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              </div>
+              <button 
+                className="p-3.5 bg-red-600 text-white border-none rounded cursor-pointer flex items-center justify-center hover:bg-red-900"
+                onClick={sendMessage}
+              >
+                <Send />
+              </button>
             </div>
           </div>
         </div>
