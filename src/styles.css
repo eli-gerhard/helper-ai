@@ -27,4 +27,16 @@
   code {
     @apply font-mono;
   }
+  
+  /* Sidebar transition */
+  .sidebar-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  /* Mobile responsive adjustments */
+  @media (max-width: 640px) {
+    .user-message, .assistant-message {
+      @apply max-w-[90%];
+    }
+  }
 }

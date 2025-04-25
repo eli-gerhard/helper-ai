@@ -7,9 +7,24 @@ const App: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [isWaitingForResponse, setIsWaitingForResponse] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState<ModelType>('gpt-4.1-mini-2025-04-14');
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
   
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const chatService = new ChatService();
+  const CHAT_MIN_WIDTH = 320; // Minimum width for chat in pixels
+  
+  // Check screen size on component mount and window resize
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth - 250 < CHAT_MIN_WIDTH);
+    };
+    
+    window.addEventListener('resize', checkScreenSize);
+    checkScreenSize();
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   
   // Scroll to bottom of chat history
   const scrollToBottom = () => {
@@ -52,6 +67,11 @@ const App: React.FC = () => {
     formattedContent = formattedContent.replace(/\n/g, '<br>');
     
     return { __html: formattedContent };
+  };
+  
+  // Toggle sidebar
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
   
   // Handle sending a message
@@ -111,69 +131,141 @@ const App: React.FC = () => {
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
+
+  // Menu icon SVG component
+  const MenuIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  );
   
   return (
-    <div className="flex flex-col h-screen bg-amber-50">
-      <div className="flex flex-col h-full max-w-2xl mx-auto w-full">
-        <div className="p-4 border-b border-amber-200 bg-amber-100 text-center">
-          <h1 className="text-xl text-gray-800">ember.ai</h1>
-        </div>
-        
-        <div 
-          ref={chatHistoryRef}
-          className="flex-1 overflow-y-auto p-5 flex flex-col gap-5"
-        >
-          {chatHistory.map((message, index) => (
-            <div 
-              key={index}
-              className={`max-w-[80%] leading-relaxed ${
-                message.role === 'user' ? 'user-message' : 
-                message.content === 'Thinking...' ? 'thinking' : 'assistant-message'
-              }`}
-            >
-              {message.content === 'Thinking...' ? (
-                message.content
-              ) : (
-                <div dangerouslySetInnerHTML={formatMessageContent(message.content)} />
-              )}
+    <div className="flex h-screen bg-amber-50 relative overflow-hidden">
+      {/* Sidebar - Content visibility tied to open state */}
+      <div 
+        className={`fixed md:relative z-10 h-full bg-amber-200 shadow-lg transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full overflow-hidden'
+        }`}
+      >
+        {isSidebarOpen && (
+          <div className="h-full overflow-y-auto">
+            <div className="py-[10px] px-7 border-b border-amber-300 flex items-center">
+              <button 
+                onClick={toggleSidebar} 
+                className="p-2 rounded-md hover:bg-amber-300 transition-colors"
+                aria-label="Close menu"
+              >
+                <MenuIcon />
+              </button>
             </div>
-          ))}
+            <nav className="p-4">
+              <ul className="space-y-3">
+                {['Home', 'Conversations', 'Settings', 'Models', 'Account', 'Help'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="block p-2 rounded hover:bg-amber-300 transition-colors text-gray-800">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        )}
+      </div>
+      
+      {/* Darkening overlay for small screens */}
+      {isSidebarOpen && isSmallScreen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-[5] md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
+      
+      {/* Main content */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Header bar - Full width with menu icon positioned at the edge */}
+        <div className="w-full bg-amber-100 border-b border-amber-200">
+          <div className="flex items-center">
+            {/* Menu button only shown when sidebar is closed */}
+            {!isSidebarOpen && (
+              <button 
+                onClick={toggleSidebar}
+                className="p-4 hover:bg-amber-200 transition-colors"
+                aria-label="Toggle menu"
+              >
+                <MenuIcon />
+              </button>
+            )}
+            
+            {/* Title centered in the remaining space */}
+            <div className="flex-1 flex justify-center">
+              <h1 className="text-xl text-gray-800 py-4">ember.ai</h1>
+            </div>
+          </div>
         </div>
         
-        <div className="p-5 border-t border-amber-200 bg-amber-100">
-          <div className="mb-2.5">
-            <label htmlFor="model-selector" className="mr-2">Model:</label>
-            <select 
-              id="model-selector"
-              className="p-2 rounded border border-gray-300 bg-white text-sm"
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value as ModelType)}
-            >
-              <option value="gpt-4.1-mini-2025-04-14">Standard GPT</option>
-              <option value="o4-mini-2025-04-16">Reasoning</option>
-              <option value="gpt-4o-mini-search-preview-2025-03-11">Search GPT</option>
-            </select>
+        {/* Chat container - 25% larger max width */}
+        <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl">
+          {/* Chat history */}
+          <div 
+            ref={chatHistoryRef}
+            className="flex-1 overflow-y-auto p-5 flex flex-col gap-5"
+          >
+            {chatHistory.map((message, index) => (
+              <div 
+                key={index}
+                className={`max-w-[80%] leading-relaxed ${
+                  message.role === 'user' ? 'user-message' : 
+                  message.content === 'Thinking...' ? 'thinking' : 'assistant-message'
+                }`}
+              >
+                {message.content === 'Thinking...' ? (
+                  message.content
+                ) : (
+                  <div dangerouslySetInnerHTML={formatMessageContent(message.content)} />
+                )}
+              </div>
+            ))}
           </div>
           
-          <div className="flex gap-2.5 items-end">
-            <textarea 
-              className="flex-1 p-3 border border-gray-300 rounded resize-none h-[60px] text-base max-h-[200px]"
-              placeholder="Type your message here..."
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onInput={handleTextareaInput}
-            />
-            
-            <button 
-              className="p-3.5 bg-red-600 text-white border-none rounded cursor-pointer flex items-center justify-center hover:bg-red-900"
-              onClick={sendMessage}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+          {/* Input area - Full width background, content constrained */}
+          <div className="w-full bg-amber-100 border-t border-amber-200">
+            <div className="max-w-4xl mx-auto p-5">
+              <div className="mb-2.5">
+                <label htmlFor="model-selector" className="mr-2">Model:</label>
+                <select 
+                  id="model-selector"
+                  className="p-2 rounded border border-gray-300 bg-white text-sm"
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value as ModelType)}
+                >
+                  <option value="gpt-4.1-mini-2025-04-14">Standard GPT</option>
+                  <option value="o4-mini-2025-04-16">Reasoning</option>
+                  <option value="gpt-4o-mini-search-preview-2025-03-11">Search GPT</option>
+                </select>
+              </div>
+              
+              <div className="flex gap-2.5 items-end">
+                <textarea 
+                  className="flex-1 p-3 border border-gray-300 rounded resize-none h-[60px] text-base max-h-[200px]"
+                  placeholder="Type your message here..."
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onInput={handleTextareaInput}
+                />
+                
+                <button 
+                  className="p-3.5 bg-red-600 text-white border-none rounded cursor-pointer flex items-center justify-center hover:bg-red-900"
+                  onClick={sendMessage}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
