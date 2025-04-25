@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .user-message {
+    @apply self-end bg-red-900 text-white p-4 rounded-lg;
+  }
+  
+  .assistant-message {
+    @apply self-start bg-yellow-200 text-gray-800 p-4 rounded-lg;
+  }
+  
+  .thinking {
+    @apply self-start text-gray-600 italic p-2.5;
+  }
+  
+  .error {
+    @apply text-red-900 p-2.5 mt-2.5 rounded bg-red-100 border border-red-200;
+  }
+  
+  /* Code block styling */
+  pre {
+    @apply bg-gray-800 text-gray-300 p-4 rounded overflow-x-auto font-mono text-sm my-2.5;
+  }
+  
+  code {
+    @apply font-mono;
+  }
+}
