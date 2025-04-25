@@ -15,4 +15,4 @@ export interface ChatResponse {
     error?: string;
 }
 
-export type ModelType = 'gpt-4.1-mini' | 'o4-mini' | 'gpt-4o-mini-search-preview';
+export type ModelType = 'gpt-4.1-mini-2025-04-14' | 'o4-mini-2025-04-16' | 'gpt-4o-mini-search-preview-2025-03-11';

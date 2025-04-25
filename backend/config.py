@@ -10,6 +10,6 @@ class Config:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     
     # Default settings
-    DEFAULT_MODEL = "gpt-4.1-mini"
+    DEFAULT_MODEL = "gpt-4.1-mini-2025-04-14"
     MAX_COMPLETION_TOKENS = 2000
     # TEMPERATURE = 0.7
