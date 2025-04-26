@@ -9,11 +9,11 @@ const App: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState<string>('');
   const [isWaitingForResponse, setIsWaitingForResponse] = useState<boolean>(false);
-  const [selectedModel, setSelectedModel] = useState<ModelType>('gpt-4.1-mini-2025-04-14');
+  const [selectedModel, setSelectedModel] = useState<ModelType>('chat');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
   const [identityPrompt, setIdentityPrompt] = useState<string>('');
-  const [questionPrompt, setQuestionPrompt] = useState<Message>({role: 'developer', content: ''});
+  const [queryPrompt, setQueryPrompt] = useState<Message>({role: 'developer', content: ''});
   
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const chatService = new ChatService();
@@ -41,34 +41,34 @@ const App: React.FC = () => {
     loadIdentityPrompt();
   }, []);
 
-  // Load question prompt when component mounts
+  // Load query prompt when component mounts
   useEffect(() => {
-    const loadQuestionPrompt = async () => {
+    const loadQueryPrompt = async () => {
       try {
-        // Fetch the question prompt from a server
-        const questionprompt = await fetch('/questionprompt.txt');
-        if (!questionprompt.ok) {
-          throw new Error(`Failed to fetch question prompt: ${questionprompt.status}`);
+        // Fetch the query prompt from a server
+        const queryprompt = await fetch('/queryprompt.txt');
+        if (!queryprompt.ok) {
+          throw new Error(`Failed to fetch query prompt: ${queryprompt.status}`);
         }
-        // const question = await questionprompt.text();
-        const question: Message = {
+        // const query = await queryprompt.text();
+        const query: Message = {
           role: 'developer',
-          content: await questionprompt.text()
+          content: await queryprompt.text()
         }
-        setQuestionPrompt(question);
+        setQueryPrompt(query);
         
       } catch (error) {
-        console.log('Error loading question prompt:', error);
-        // Set a default question prompt if file can't be loaded
-        const question: Message = {
+        console.log('Error loading query prompt:', error);
+        // Set a default query prompt if file can't be loaded
+        const query: Message = {
           role: 'developer',
           content: ''
         }
-        setQuestionPrompt(question);
+        setQueryPrompt(query);
       }
     };
-    console.log('question import');
-    loadQuestionPrompt();
+    console.log('query import');
+    loadQueryPrompt();
   }, []);
 
 
@@ -159,7 +159,7 @@ const App: React.FC = () => {
     
     try {
       // Send to API
-      const response = await chatService.sendMessage([...chatHistory, userMessage, questionPrompt], selectedModel);
+      const response = await chatService.sendMessage([...chatHistory, userMessage, queryPrompt], selectedModel);
       console.log('Chat History:');
       console.log(chatHistory);
       // Remove thinking indicator and add response
@@ -304,9 +304,9 @@ const App: React.FC = () => {
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value as ModelType)}
               >
-                <option value="gpt-4.1-mini-2025-04-14">Standard GPT</option>
-                <option value="o4-mini-2025-04-16">Reasoning</option>
-                <option value="gpt-4o-mini-search-preview-2025-03-11">Search GPT</option>
+                <option value="chat">Standard GPT</option>
+                <option value="reason">Reasoning</option>
+                <option value="search">Search GPT</option>
               </select>
             </div>
             

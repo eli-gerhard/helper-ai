@@ -46,8 +46,18 @@ async def chat(request: ChatRequest):
         # Convert Pydantic models to dictionaries
         messages = [msg.dict() for msg in request.messages]
         
+        # Model version router
+        if request.model == "chat":
+            model_name ='gpt-4.1-mini-2025-04-14'
+        elif request.model == "reason":
+            model_name = 'o4-mini-2025-04-16'
+        elif request.model == "search":
+            model_name = 'gpt-4o-mini-search-preview-2025-03-11'
+        else:
+            model_name ='gpt-4.1-mini-2025-04-14'            
+
         # Generate response
-        response = await llm_client.generate_response(messages, request.model)
+        response = await llm_client.generate_response(messages, model_name)
         
         if "error" in response:
             return ChatResponse(
