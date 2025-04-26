@@ -5,3 +5,5 @@ venv/
 __pycache__/
 dist/
 test_server.py
+identityprompt.txt
+questionprompt.txt

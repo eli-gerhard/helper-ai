@@ -1,7 +1,7 @@
 // Define types for our chat application
 
 export interface Message {
-    role: 'user' | 'assistant';
+    role: 'user' | 'assistant' | 'system' | 'developer';
     content: string;
 }
 

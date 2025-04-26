@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Send, Menu } from 'lucide-react';
 import { Message, ModelType } from './types';
 import { ChatService } from './ChatService';
+// You can import the identity prompt directly if it's a static file
+// import identityPromptText from './identityprompt.txt';
 
 const App: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
@@ -10,11 +12,66 @@ const App: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState<ModelType>('gpt-4.1-mini-2025-04-14');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
+  const [identityPrompt, setIdentityPrompt] = useState<string>('');
+  const [questionPrompt, setQuestionPrompt] = useState<Message>({role: 'developer', content: ''});
   
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const chatService = new ChatService();
   const CHAT_MIN_WIDTH = 320; // Minimum width for chat in pixels
   
+  // Load identity prompt when component mounts
+  useEffect(() => {
+    const loadIdentityPrompt = async () => {
+      try {
+        // Fetch the identity prompt from a server
+        const identityprompt = await fetch('/identityprompt.txt');
+        if (!identityprompt.ok) {
+          throw new Error(`Failed to fetch identity prompt: ${identityprompt.status}`);
+        }
+        const text = await identityprompt.text();
+        setIdentityPrompt(text);
+        
+      } catch (error) {
+        console.log('Error loading identity prompt:', error);
+        // Set a default identity prompt if file can't be loaded
+        setIdentityPrompt('You are a helpful assistant.');
+      }
+    };
+    console.log('identity import');
+    loadIdentityPrompt();
+  }, []);
+
+  // Load question prompt when component mounts
+  useEffect(() => {
+    const loadQuestionPrompt = async () => {
+      try {
+        // Fetch the question prompt from a server
+        const questionprompt = await fetch('/questionprompt.txt');
+        if (!questionprompt.ok) {
+          throw new Error(`Failed to fetch question prompt: ${questionprompt.status}`);
+        }
+        // const question = await questionprompt.text();
+        const question: Message = {
+          role: 'developer',
+          content: await questionprompt.text()
+        }
+        setQuestionPrompt(question);
+        
+      } catch (error) {
+        console.log('Error loading question prompt:', error);
+        // Set a default question prompt if file can't be loaded
+        const question: Message = {
+          role: 'developer',
+          content: ''
+        }
+        setQuestionPrompt(question);
+      }
+    };
+    console.log('question import');
+    loadQuestionPrompt();
+  }, []);
+
+
   // Check screen size on component mount and window resize
   useEffect(() => {
     const checkScreenSize = () => {
@@ -34,15 +91,23 @@ const App: React.FC = () => {
     }
   };
   
-  // Add welcome message when component mounts
+  // Add welcome message and identity when identityPrompt is loaded
   useEffect(() => {
-    const welcomeMessage: Message = { 
-      role: 'assistant', 
-      content: 'Hello! I\'m your AI assistant. How can I help you today?' 
-    };
-    setChatHistory([welcomeMessage]);
-  }, []);
-  
+    if (identityPrompt) {
+      const welcomeMessage: Message = { 
+        role: 'assistant', 
+        content: 'How can I help you today?' 
+      };
+
+      const identity: Message = {
+        role: 'system',
+        content: identityPrompt
+      };
+      console.log('startup');
+      setChatHistory([identity, welcomeMessage]);
+    }
+  }, [identityPrompt]);
+
   // Scroll to bottom when chat history changes
   useEffect(() => {
     scrollToBottom();
@@ -67,6 +132,10 @@ const App: React.FC = () => {
     // Convert line breaks
     formattedContent = formattedContent.replace(/\n/g, '<br>');
     
+    // Add bullet and hashtag formatting //////////////////////////////////////////////////////////////
+
+    // Add table formatting //////////////////////////////////////////////////////////////
+
     return { __html: formattedContent };
   };
   
@@ -90,8 +159,9 @@ const App: React.FC = () => {
     
     try {
       // Send to API
-      const response = await chatService.sendMessage([...chatHistory, userMessage], selectedModel);
-      
+      const response = await chatService.sendMessage([...chatHistory, userMessage, questionPrompt], selectedModel);
+      console.log('Chat History:');
+      console.log(chatHistory);
       // Remove thinking indicator and add response
       setChatHistory(prevHistory => {
         const newHistory = prevHistory.filter(msg => msg.content !== 'Thinking...');
@@ -205,7 +275,7 @@ const App: React.FC = () => {
             ref={chatHistoryRef}
             className="flex-1 overflow-y-auto p-5 flex flex-col gap-5"
           >
-            {chatHistory.map((message, index) => (
+            {chatHistory.filter(msg => msg.role !== 'system').map((message, index) => (
               <div 
                 key={index}
                 className={`max-w-[80%] leading-relaxed ${

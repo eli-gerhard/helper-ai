@@ -32,23 +32,6 @@ class LLMClient:
                 }
             }
     
-    # async def _call_openai_api(self, messages: List[Dict[str, str]], model: str) -> Dict[str, Any]:
-    #     """
-    #     Call the OpenAI API to generate a response.
-    #     """
-    #     response = await self.openai_client.chat.completions.create(
-    #         model=model,
-    #         messages=messages,
-    #         max_tokens=Config.MAX_TOKENS,
-    #         temperature=Config.TEMPERATURE
-    #     )
-        
-    #     return {
-    #         "message": {
-    #             "role": "assistant",
-    #             "content": response.choices[0].message.content
-    #         }
-    #     }
     async def _call_openai_api(self, messages: List[Dict[str, str]], model: str) -> Dict[str, Any]:
         """
         Call the OpenAI API to generate a response.
