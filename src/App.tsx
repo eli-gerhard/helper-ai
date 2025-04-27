@@ -85,7 +85,7 @@ useEffect(() => {
         role: 'developer',
         content: await questionprompt.text()
       }
-      setQustionPrompt(question);
+      setQuestionPrompt(question);
       
     } catch (error) {
       console.log('Error loading question prompt:', error);
