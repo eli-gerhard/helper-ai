@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Send, Menu } from 'lucide-react';
 import { Message, ModelType } from './types';
 import { ChatService } from './ChatService';
-// You can import the identity prompt directly if it's a static file
-// import identityPromptText from './identityprompt.txt';
+import { Routing } from './Routing';
 
 const App: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
@@ -18,23 +17,21 @@ const App: React.FC = () => {
   
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const chatService = new ChatService();
-  const CHAT_MIN_WIDTH = 320; // Minimum width for chat in pixels
+  const routing = new Routing();
+  const CHAT_MIN_WIDTH = 320;
   
   // Load identity prompt when component mounts
   useEffect(() => {
     const loadIdentityPrompt = async () => {
       try {
-        // Fetch the identity prompt from a server
         const identityprompt = await fetch('/identityprompt.txt');
         if (!identityprompt.ok) {
           throw new Error(`Failed to fetch identity prompt: ${identityprompt.status}`);
         }
         const text = await identityprompt.text();
         setIdentityPrompt(text);
-        
       } catch (error) {
         console.log('Error loading identity prompt:', error);
-        // Set a default identity prompt if file can't be loaded
         setIdentityPrompt('You are a helpful assistant.');
       }
     };
@@ -46,21 +43,17 @@ const App: React.FC = () => {
   useEffect(() => {
     const loadQueryPrompt = async () => {
       try {
-        // Fetch the query prompt from a server
         const queryprompt = await fetch('/queryprompt.txt');
         if (!queryprompt.ok) {
           throw new Error(`Failed to fetch query prompt: ${queryprompt.status}`);
         }
-        // const query = await queryprompt.text();
         const query: Message = {
           role: 'developer',
           content: await queryprompt.text()
         }
         setQueryPrompt(query);
-        
       } catch (error) {
         console.log('Error loading query prompt:', error);
-        // Set a default query prompt if file can't be loaded
         const query: Message = {
           role: 'developer',
           content: ''
@@ -72,35 +65,31 @@ const App: React.FC = () => {
     loadQueryPrompt();
   }, []);
 
-// Load question prompt when component mounts
-useEffect(() => {
-  const loadQuestionPrompt = async () => {
-    try {
-      // Fetch the question prompt from a server
-      const questionprompt = await fetch('/questionprompt.txt');
-      if (!questionprompt.ok) {
-        throw new Error(`Failed to fetch question prompt: ${questionprompt.status}`);
+  // Load question prompt when component mounts
+  useEffect(() => {
+    const loadQuestionPrompt = async () => {
+      try {
+        const questionprompt = await fetch('/questionprompt.txt');
+        if (!questionprompt.ok) {
+          throw new Error(`Failed to fetch question prompt: ${questionprompt.status}`);
+        }
+        const question: Message = {
+          role: 'developer',
+          content: await questionprompt.text()
+        }
+        setQuestionPrompt(question);
+      } catch (error) {
+        console.log('Error loading question prompt:', error);
+        const question: Message = {
+          role: 'developer',
+          content: ''
+        }
+        setQuestionPrompt(question);
       }
-      const question: Message = {
-        role: 'developer',
-        content: await questionprompt.text()
-      }
-      setQuestionPrompt(question);
-      
-    } catch (error) {
-      console.log('Error loading question prompt:', error);
-      // Set a default question prompt if file can't be loaded
-      const question: Message = {
-        role: 'developer',
-        content: ''
-      }
-      setQuestionPrompt(question);
-    }
-  };
-  console.log('question import');
-  loadQuestionPrompt();
-}, []);
-
+    };
+    console.log('question import');
+    loadQuestionPrompt();
+  }, []);
 
   // Check screen size on component mount and window resize
   useEffect(() => {
@@ -188,22 +177,28 @@ useEffect(() => {
     setIsWaitingForResponse(true);
     
     try {
-      // Send to API
-      const response = await chatService.sendMessage([...chatHistory, userMessage, queryPrompt], selectedModel);
-      console.log('Chat History:');
-      console.log(chatHistory);
-      // Remove thinking indicator and add response
+      // First, get the routing response
+      // const routingResponse = await chatService.sendMessage([...chatHistory, userMessage, queryPrompt], selectedModel);
+      const routingResponse = await chatService.sendMessage([...chatHistory, userMessage, queryPrompt], 'chat');
+      console.log(routingResponse.message.content);
+      if (routingResponse.error) {
+        throw new Error(routingResponse.error);
+      }
+      
+      // Get the final response through routing
+      const finalResponse = await routing.route({
+        routingResponse: routingResponse.message.content,
+        chatHistory: chatHistory,
+        userMessage: userMessage,
+        questionPrompt: questionPrompt
+      });
+      
+      // Remove thinking indicator and add final response
       setChatHistory(prevHistory => {
         const newHistory = prevHistory.filter(msg => msg.content !== 'Thinking...');
-        
-        if (response.error) {
-          // Add error message
-          return [...newHistory, { role: 'assistant', content: `Error: ${response.error}` }];
-        }
-        
-        // Add assistant response
-        return [...newHistory, response.message];
+        return [...newHistory, finalResponse];
       });
+      
     } catch (error) {
       // Remove thinking indicator and add error message
       setChatHistory(prevHistory => {
@@ -235,7 +230,7 @@ useEffect(() => {
   
   return (
     <div className="flex h-screen bg-amber-50 relative overflow-hidden">
-      {/* Sidebar - Content visibility tied to open state */}
+      {/* Sidebar */}
       <div 
         className={`fixed md:relative z-10 h-full bg-amber-200 shadow-lg transition-all duration-300 ease-in-out ${
           isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full overflow-hidden'
@@ -277,10 +272,9 @@ useEffect(() => {
       
       {/* Main content */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* Header bar - Full width with menu icon positioned at the edge */}
+        {/* Header bar */}
         <div className="w-full bg-amber-100 border-b border-amber-200">
           <div className="flex items-center">
-            {/* Menu button only shown when sidebar is closed */}
             {!isSidebarOpen && (
               <button 
                 onClick={toggleSidebar}
@@ -291,14 +285,13 @@ useEffect(() => {
               </button>
             )}
             
-            {/* Title centered in the remaining space */}
             <div className="flex-1 flex justify-center">
               <h1 className="text-xl text-gray-800 py-4">ember.ai</h1>
             </div>
           </div>
         </div>
         
-        {/* Chat container - 25% larger max width */}
+        {/* Chat container */}
         <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl">
           {/* Chat history */}
           <div 
@@ -323,10 +316,10 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Input area - Full width background, content constrained */}
+        {/* Input area */}
         <div className="w-full bg-amber-100 border-t border-amber-200">
           <div className="max-w-4xl mx-auto p-5">
-            <div className="mb-2.5">
+            {/* <div className="mb-2.5">
               <label htmlFor="model-selector" className="mr-2">Model:</label>
               <select 
                 id="model-selector"
@@ -338,7 +331,7 @@ useEffect(() => {
                 <option value="reason">Reasoning</option>
                 <option value="search">Search GPT</option>
               </select>
-            </div>
+            </div> */}
             
             <div className="flex gap-2.5 items-end">
               <textarea 
