@@ -5,10 +5,11 @@ dist/
 
 identityprompt.txt
 queryprompt.txt
-systemprompt.txt
+questionprompt.txt
 
 Playground.tsx
 test_server.py
+systemprompt.txt
 
 node_modules/
 venv/

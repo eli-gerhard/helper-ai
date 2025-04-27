@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
   const [identityPrompt, setIdentityPrompt] = useState<string>('');
   const [queryPrompt, setQueryPrompt] = useState<Message>({role: 'developer', content: ''});
+  const [questionPrompt, setQuestionPrompt] = useState<Message>({role: 'developer', content: ''});
   
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const chatService = new ChatService();
@@ -70,6 +71,35 @@ const App: React.FC = () => {
     console.log('query import');
     loadQueryPrompt();
   }, []);
+
+// Load question prompt when component mounts
+useEffect(() => {
+  const loadQuestionPrompt = async () => {
+    try {
+      // Fetch the question prompt from a server
+      const questionprompt = await fetch('/questionprompt.txt');
+      if (!questionprompt.ok) {
+        throw new Error(`Failed to fetch question prompt: ${questionprompt.status}`);
+      }
+      const question: Message = {
+        role: 'developer',
+        content: await questionprompt.text()
+      }
+      setQustionPrompt(question);
+      
+    } catch (error) {
+      console.log('Error loading question prompt:', error);
+      // Set a default question prompt if file can't be loaded
+      const question: Message = {
+        role: 'developer',
+        content: ''
+      }
+      setQuestionPrompt(question);
+    }
+  };
+  console.log('question import');
+  loadQuestionPrompt();
+}, []);
 
 
   // Check screen size on component mount and window resize
