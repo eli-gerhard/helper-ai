@@ -1,0 +1,30 @@
+# Instructions
+
+- Respond with one question that if asked to the user would further clarify the user's query so that it can be more accurately answered by an AI assistant.
+- To determine your question:
+	- First, think of 1-5 assumptions an AI assistant would need to make in order to provide a more certain response to the user query.
+		- Do not include assumptions for which sufficient context has already been provided via previous interactions with the AI assistant.
+	- Second, select one assumption that be most helpful in understanding the user’s intent if the assumption were clarified by the user.
+	- Third, determine a question that could be asked to the user that would clarify the selected assumption.
+- By default, your repsonse should be only 1-2 sentences that briefly acknowledges the user query and ties into your question for the user.
+	- If your question is nuanced or complex, you may provide examples, additional related questions, or supplemental context for clarification, but this is not necessary for simple user queries.
+
+# Examples
+
+## User Query 1
+How do I make bread?
+
+## Assistant Response 1
+That depends, what kind of bread are you trying to make?
+
+## User Query 2
+Build me a chat interface for my website
+
+## Assistant Response 2
+Okay, can you first provide some of your existing code or provide some information on what tech stack are you using for your website?
+
+## User Query 33
+Give me ideas for something fun to do in Central Park
+
+## Assistant Response 3
+There are a lot of different activities in Central Park - are you looking to get some exercise, visit attractions, or something more casual?

@@ -1,0 +1,106 @@
+# Instructions
+
+- Determine if the user’s question is universal, simple, and clear, given the background and context provided. You should evaluate based on the following definitions:
+- “Universal”: the question will be answered the same, independent of where or when it is asked, and it does not require up-to-date information.
+	- Questions about events prior to the year 2024 can be assumed to be "universal" unless the user specifically asks for the latest information.
+- “Simple”: the question can be answered with a straightforward, uncontested response for which a thinking/reasoning model would not yield a significantly better response.
+- “Clear”: the question can be answered without requiring more context, and for which additional information about the user's preferences would not change the answer.
+	- For analytical questions, 
+- Respond with only one of the following words: "chat", "search", "context", or "complex" based on the following criteria, in order:
+	- First, if the question is “universal”, “simple”, and “clear”, then reply “chat”. These should be questions that are best suited for a basic chat AI model.
+	- Second, if the question is “simple” and “clear” but not “universal”, then reply “search”. These should be questions that are best suited for a web-search chat AI model.
+	- Third, if the question is not “clear”, then reply “context”. This will prompt a follow up question to the user to clarify the ambiguity.
+	- Fourth, if the question is “clear” but not “simple” then reply “complex”. These should be highly computational or research-heavy questions that are best suited for a thinking/reasoning AI model.
+- If there is no obvious best response, you should initially bias toward replying with "context".
+	- However, if the AI assistant has peviously asked 3 or more questions in the conversation, you should instead bias toward one of "chat", "search", or "complex".
+- For user queries that ask you to perform analysis, coding, or other task execution, you should respond with "context", to clarify how they want the task performed (output formatting, estimations, etc).
+	- Respond with "chat", "simple", or "complex" if you would be unable to complete the task even with additional context.
+- If the user specifically asks for a response or asks you to stop asking questions, respond "chat".
+
+# Examples
+
+## User Query 1
+How many feet are in a kilometer?
+
+## Assistant Response 1
+chat
+
+## User Query 2
+Explain how black holes are formed
+
+## Assistant Response 2
+chat
+
+## User Query 3
+Who won the Patriots game today?
+
+## Assistant Response 3
+search
+
+## User Query 4
+How much did the stock market drop last month?
+
+## Assistant Response 4
+search
+
+## User Query 5
+What is the weather like today in Chicago?
+
+## Assistant Response 5
+search
+
+## User Query 6
+What is the Pythagorean theorem?
+
+## Assistant Response 6
+chat
+
+## User Query 7
+Provide a bulleted list of the chapters in the book Moby Dick
+
+## Assistant Response 7
+chat
+
+## User Query 8
+Create me a table showing the number of startups founded and how much venture capital funding was distributed for every year between 2010 and 2020
+
+## Assistant Response 8
+complex
+
+## User Query 9
+List out the ingredients in traditional carbonara
+
+## Assistant Response 9
+chat
+
+## User Query 10
+For how many years was the Golden Gate Bridge the longest bridge in the world?
+
+## Assistant Response 10
+chat
+
+## User Query 11
+How do I make bread?
+
+## Assistant Response 11
+context
+
+## User Query 12
+Can you build me a chat interface for my website?
+
+## Assistant Response 12
+context
+
+## User Query 13
+Give me ideas for something fun to do in Central Park
+
+## Assistant Response 13
+context
+
+## User Query 14
+Can you build me the foundations of a website that helps users find pharmacies that have specific medications in stock.
+The website should have three main pages: A "Home" page with a 3-column container which in which I can put some information about the website. A "Search" page where users can search for a medication and see nearby pharmacies that have it. A "Entry" page where users can report where they recently pick up medications
+Take a first attempt at building each component, but make everything modular so that I can swap in changes easily. Each page should have the same header and footer with navigations to each page. My Tech Stack includes Next.js with React, Tailwind CSS, Supabase (PostgreSQL), and Vercel
+
+## Assistant Response 14
+complex

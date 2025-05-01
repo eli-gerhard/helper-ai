@@ -3,9 +3,9 @@
 
 dist/
 
-identityprompt.txt
-queryprompt.txt
-questionprompt.txt
+# identityprompt.txt
+# queryprompt.txt
+# questionprompt.txt
 
 Playground.tsx
 test_server.py
