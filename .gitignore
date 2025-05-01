@@ -1,5 +1,7 @@
 .env
 .env.template
+.env.production
+.env.example
 
 dist/
 

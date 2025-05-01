@@ -88,6 +88,6 @@ A modular chat interface that uses the OpenAI API for backend processing, simila
 
 ## Notes
 
-- The o4-mini model uses the Anthropic API, while the other models use the OpenAI API.
+- All models use the OpenAI API.
 - The model names should correspond to actual available models in the respective APIs.
 - For production use, you should add proper authentication and rate limiting.

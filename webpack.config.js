@@ -23,4 +23,20 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   devtool: 'source-map',
+  devServer: {
+    static: {
+      directory: path.join(__dirname, '/'),
+    },
+    compress: true,
+    port: 3000,
+    hot: true,
+    open: true,
+    historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+    },
+  },
 };

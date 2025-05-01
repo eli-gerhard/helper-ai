@@ -1,17 +1,27 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Optional
 import uvicorn
+import logging
 
 from openai_client import LLMClient
+from config import Config
 
-app = FastAPI()
+# Set up logging
+logging.basicConfig(level=logging.INFO if Config.DEBUG else logging.WARNING)
+logger = logging.getLogger(__name__)
+
+app = FastAPI(
+    title="LLM Chat API",
+    description="API for LLM chat interface",
+    version="1.0.0"
+)
 
 # Add CORS middleware to allow requests from the frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For development - restrict this in production
+    allow_origins=Config.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,17 +44,21 @@ class ChatResponse(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "API is working!"}
+    return {"status": "ok", "message": "API is working!"}
 
-@app.get("/test")
-async def test():
-    return {"message": "API is working!"}
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for AWS Elastic Beanstalk"""
+    return {"status": "healthy"}
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
         # Convert Pydantic models to dictionaries
         messages = [msg.dict() for msg in request.messages]
+        
+        # Log the incoming request in debug mode
+        logger.debug(f"Received chat request with model: {request.model}")
         
         # Model version router
         if request.model == "chat":
@@ -60,6 +74,7 @@ async def chat(request: ChatRequest):
         response = await llm_client.generate_response(messages, model_name)
         
         if "error" in response:
+            logger.error(f"Error generating response: {response['error']}")
             return ChatResponse(
                 message=Message(role="assistant", content=""),
                 error=response["error"]
@@ -72,9 +87,16 @@ async def chat(request: ChatRequest):
             )
         )
     except Exception as e:
+        logger.exception("Exception in chat endpoint")
         raise HTTPException(status_code=500, detail=str(e))
 
 # For local development
 if __name__ == "__main__":
-    # uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    # port = int(os.getenv("PORT", "8000"))
+    # host = os.getenv("HOST", "0.0.0.0")
+    # # Enable reload only in development mode
+    # reload_flag = not Config.is_production()
+    
+    # logger.info(f"Starting server on {host}:{port} with reload={reload_flag}")
     uvicorn.run(app, host="0.0.0.0", port=8000)
+    # uvicorn.run(app, host=host, port=port, reload=reload_flag)

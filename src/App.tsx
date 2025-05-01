@@ -229,10 +229,10 @@ const App: React.FC = () => {
   };
   
   return (
-    <div className="flex h-screen bg-amber-50 relative overflow-hidden">
+    <div className="flex h-screen bg-gray-800 relative overflow-hidden">
       {/* Sidebar */}
       <div 
-        className={`fixed md:relative z-10 h-full bg-amber-200 shadow-lg transition-all duration-300 ease-in-out ${
+        className={`fixed md:relative z-10 h-full bg-gray-800 shadow-lg transition-all duration-300 ease-in-out ${
           isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full overflow-hidden'
         }`}
       >
