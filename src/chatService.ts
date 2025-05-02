@@ -3,6 +3,7 @@ import { ChatRequest, ChatResponse, Message } from './types';
 export class ChatService {
     // Use environment variable with fallback to localhost for development
     private readonly apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/chat';
+    // private readonly apiUrl = 'http://localhost:8000/api/chat';
 
     async sendMessage(messages: Message[], model: string): Promise<ChatResponse> {
         try {

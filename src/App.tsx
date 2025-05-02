@@ -229,29 +229,29 @@ const App: React.FC = () => {
   };
   
   return (
-    <div className="flex h-screen bg-gray-800 relative overflow-hidden">
+    <div className="flex h-screen bg-gray-900 relative overflow-hidden">
       {/* Sidebar */}
       <div 
-        className={`fixed md:relative z-10 h-full bg-gray-800 shadow-lg transition-all duration-300 ease-in-out ${
+        className={`fixed md:relative z-10 h-full bg-gray-900 border-r border-white shadow-lg transition-all duration-300 ease-in-out ${
           isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full overflow-hidden'
         }`}
       >
         {isSidebarOpen && (
           <div className="h-full overflow-y-auto">
-            <div className="py-[10px] px-5 border-b border-amber-300 flex items-center">
+            <div className="py-[10px] px-5 border-b border-red-700 flex items-center">
               <button 
                 onClick={toggleSidebar} 
-                className="p-2 rounded-md hover:bg-amber-300 transition-colors"
+                className="p-2 rounded-md hover:bg-gray-800 transition-colors"
                 aria-label="Close menu"
               >
-                <Menu />
+                <Menu className='stroke-white'/>
               </button>
             </div>
             <nav className="p-4">
               <ul className="space-y-3">
                 {['Home', 'Conversations', 'Settings', 'Models', 'Account', 'Help'].map((item) => (
                   <li key={item}>
-                    <a href="#" className="block p-2 rounded hover:bg-amber-300 transition-colors text-gray-800">
+                    <a href="#" className="block p-2 rounded hover:bg-gray-900 transition-colors text-white">
                       {item}
                     </a>
                   </li>
@@ -273,20 +273,21 @@ const App: React.FC = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Header bar */}
-        <div className="w-full bg-amber-100 border-b border-amber-200">
+        <div className="w-full bg-gray-900 border-b border-red-600">
           <div className="flex items-center">
             {!isSidebarOpen && (
               <button 
                 onClick={toggleSidebar}
-                className="absolute p-2 m-2 rounded-md hover:bg-amber-200 transition-colors"
+                className="absolute p-2 m-2 rounded-md hover:bg-gray-800 transition-colors"
                 aria-label="Toggle menu"
               >
-                <Menu />
+                <Menu className='stroke-white'/>
               </button>
             )}
             
             <div className="flex-1 flex justify-center">
-              <h1 className="text-xl text-gray-800 py-4">ember.ai</h1>
+              {/* <h1 className="text-xl text-gray-800 py-4">Thisbe AI</h1> */}
+              <img src='planetslogo.png' alt="Logo" className='w-24 py-3.5'></img>
             </div>
           </div>
         </div>
@@ -317,7 +318,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Input area */}
-        <div className="w-full bg-amber-100 border-t border-amber-200">
+        <div className="w-full bg-gray-900 border-t border-blue-600">
           <div className="max-w-4xl mx-auto p-5">
             {/* <div className="mb-2.5">
               <label htmlFor="model-selector" className="mr-2">Model:</label>
@@ -333,9 +334,9 @@ const App: React.FC = () => {
               </select>
             </div> */}
             
-            <div className="flex gap-2.5 items-end">
+            <div className="flex gap-2.5 items-end align-middle">
               <textarea 
-                className="flex-1 p-3 border border-gray-300 rounded resize-none h-[60px] text-base max-h-[200px]"
+                className="flex-1 p-3 border border-blue-600 rounded resize-none h-[60px] text-base max-h-[200px]"
                 placeholder="Type your message here..."
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
@@ -344,7 +345,7 @@ const App: React.FC = () => {
               />
               
               <button 
-                className="p-3.5 bg-red-600 text-white border-none rounded cursor-pointer flex items-center justify-center hover:bg-red-900"
+                className="p-3.5 bg-gray-900 text-red-600 border border-red-600 rounded cursor-pointer flex items-center justify-center hover:bg-gray-800"
                 onClick={sendMessage}
               >
                 <Send />
