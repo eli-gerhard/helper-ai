@@ -2,6 +2,7 @@
 .env.template
 .env.production
 .env.example
+.env.local
 
 dist/
 

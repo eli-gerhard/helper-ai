@@ -1,20 +1,23 @@
+'use client';
+
 import { ChatRequest, ChatResponse, Message } from './types';
 
 export class ChatService {
-    // Use environment variable with fallback to localhost for development
-    private readonly apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/chat';
-    // private readonly apiUrl = 'http://localhost:8000/api/chat';
+    // Use environment variable with fallback
+    private readonly apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api/chat';
 
     async sendMessage(messages: Message[], model: string): Promise<ChatResponse> {
         try {
-            console.log('Model Input:');
-            console.log({ messages, model });
+            console.log('Sending request to:', this.apiUrl);
+            console.log('Model Input:', { messages, model });
+            
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ messages, model } as ChatRequest),
+                cache: 'no-store' // Ensure we never cache chat responses
             });
 
             if (!response.ok) {

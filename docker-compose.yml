@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Backend API service (FastAPI)
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      - ENV=development
+      - DEBUG=True
+      - CORS_ORIGINS=http://localhost:3000
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  
+  # Frontend service (Next.js)
+  frontend:
+    build: ./chat-interface
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./chat-interface:/app
+      - /app/node_modules
+    environment:
+      - BACKEND_API_URL=http://api:8000/api/chat
+      - NEXT_PUBLIC_API_URL=/api/chat
+    depends_on:
+      - api

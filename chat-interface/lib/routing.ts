@@ -1,5 +1,7 @@
+'use client';
+
 import { Message, ModelType } from './types';
-import { ChatService } from './ChatService';
+import { ChatService } from './chatService';
 
 interface RoutingProps {
   routingResponse: string;

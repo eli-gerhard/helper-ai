@@ -10,7 +10,8 @@ services:
     environment:
       - ENV=development
       - DEBUG=True
-      - CORS_ORIGINS=http://localhost:3000,http://localhost:8080
+      # Update CORS to include Next.js frontend URL
+      - CORS_ORIGINS=http://localhost:3000
     volumes:
       - .:/app
     # Health check for local testing

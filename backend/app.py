@@ -90,6 +90,26 @@ async def chat(request: ChatRequest):
         logger.exception("Exception in chat endpoint")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/prompts/{prompt_name}")
+async def get_prompt(prompt_name: str):
+    """Get prompt content by name"""
+    try:
+        # Define allowed prompts for security
+        allowed_prompts = ["identityprompt", "queryprompt", "questionprompt"]
+        
+        if prompt_name not in allowed_prompts:
+            return {"error": "Prompt not found"}
+        
+        # Read prompt file
+        file_path = f"prompts/{prompt_name}.txt"
+        with open(file_path, "r") as file:
+            content = file.read()
+            
+        return {"content": content}
+    except Exception as e:
+        logger.exception(f"Error reading prompt: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
 # For local development
 if __name__ == "__main__":
     # port = int(os.getenv("PORT", "8000"))
