@@ -183,7 +183,7 @@ export default function HomePage() {
             )}
             
             <div className="flex-1 flex justify-center">
-              <div className="w-24 py-3.5 relative">
+              <div className="w-24 h-auto py-3.5 relative">
                 <Image 
                   src="/planetslogo.png" 
                   alt="Logo" 

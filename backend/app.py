@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List, Dict, Optional
 import uvicorn
 import logging
+import os
 
 from openai_client import LLMClient
 from config import Config
@@ -100,9 +101,13 @@ async def get_prompt(prompt_name: str):
         if prompt_name not in allowed_prompts:
             return {"error": "Prompt not found"}
         
-        # Read prompt file
-        file_path = f"prompts/{prompt_name}.txt"
-        with open(file_path, "r") as file:
+        # Get the directory of the current script
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Create absolute path to the prompt file
+        file_path = os.path.join(current_dir, "prompts", f"{prompt_name}.txt")
+        
+        with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()
             
         return {"content": content}
