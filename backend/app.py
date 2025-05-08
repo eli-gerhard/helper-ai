@@ -117,11 +117,5 @@ async def get_prompt(prompt_name: str):
 
 # For local development
 if __name__ == "__main__":
-    # port = int(os.getenv("PORT", "8000"))
-    # host = os.getenv("HOST", "0.0.0.0")
-    # # Enable reload only in development mode
-    # reload_flag = not Config.is_production()
     
-    # logger.info(f"Starting server on {host}:{port} with reload={reload_flag}")
     uvicorn.run(app, host="0.0.0.0", port=8000)
-    # uvicorn.run(app, host=host, port=port, reload=reload_flag)
