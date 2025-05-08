@@ -15,7 +15,38 @@ class Message:
 
 class LLMClient:
     def __init__(self):
-        self.openai_client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
+        # # Clear any proxy settings that may be causing issues
+        # import os
+        # if 'http_proxy' in os.environ:
+        #     del os.environ['http_proxy']
+        # if 'https_proxy' in os.environ:
+        #     del os.environ['https_proxy']
+        # if 'HTTP_PROXY' in os.environ:
+        #     del os.environ['HTTP_PROXY']
+        # if 'HTTPS_PROXY' in os.environ:
+        #     del os.environ['HTTPS_PROXY']
+        
+        # self.openai_client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
+        import os
+        for proxy_var in ['http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY']:
+            if proxy_var in os.environ:
+                del os.environ[proxy_var]
+        
+        # Create client with minimal configuration
+        import openai
+        try:
+            # Try creating with just the API key
+            self.openai_client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
+        except TypeError as e:
+            # If that fails, print diagnostic info and try alternative approach
+            print(f"Error initializing OpenAI client: {str(e)}")
+            print(f"OpenAI version: {openai.__version__}")
+            
+            # Alternative initialization with no keyword args
+            from openai import OpenAI
+            self.openai_client = OpenAI()
+            # Set API key after initialization
+            self.openai_client.api_key = Config.OPENAI_API_KEY
     
     async def generate_response(self, messages: List[Dict[str, str]], model: str) -> Dict[str, Any]:
         """

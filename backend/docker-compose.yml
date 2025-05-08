@@ -8,7 +8,8 @@ services:
     environment:
       - ENV=production
       - DEBUG=False
-      - CORS_ORIGINS=https://thisbeai.com
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CORS_ORIGINS=${CORS_ORIGINS}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
