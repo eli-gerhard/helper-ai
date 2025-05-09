@@ -10,7 +10,7 @@
     }
   },
   "env": {
-    "BACKEND_API_URL": "http://thisbeai-env-1.eba-3ebgg5up.us-east-2.elasticbeanstalk.com",
-    "NEXT_PUBLIC_BACKEND_URL": "http://thisbeai-env-1.eba-3ebgg5up.us-east-2.elasticbeanstalk.com"
+    "BACKEND_API_URL": "https://thisbeai-env-1.eba-3ebgg5up.us-east-2.elasticbeanstalk.com",
+    "NEXT_PUBLIC_BACKEND_URL": "https://thisbeai-env-1.eba-3ebgg5up.us-east-2.elasticbeanstalk.com"
   }
 }
