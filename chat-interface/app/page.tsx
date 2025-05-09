@@ -29,7 +29,8 @@ export default function HomePage() {
     const loadPrompts = async () => {
       try {
         // Use explicit backend URL - change this if your backend URL is different
-        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
+        // const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
+        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
         
         // Load identity prompt
         const identityResponse = await fetch(`${BACKEND_URL}/prompts/identityprompt`);

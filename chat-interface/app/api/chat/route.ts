@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const backendUrl = `${process.env.BACKEND_API_URL || 'http://localhost:8000'}/api/chat`;
+    // const backendUrl = `${process.env.BACKEND_API_URL || 'http://localhost:8000'}/api/chat`;
+    const backendUrl = `${process.env.BACKEND_API_URL}/api/chat`;
     
     console.log(`Proxying request to backend at: ${backendUrl}`);
     
