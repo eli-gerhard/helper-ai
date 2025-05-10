@@ -12,9 +12,9 @@
   --accentbl: #0000ff;
   
   /* Default gradient variables */
-  --gradient-pos-x: 50%;
+  /* --gradient-pos-x: 50%;
   --gradient-pos-y: 50%;
-  --gradient-angle: 135deg;
+  --gradient-angle: 135deg; */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,14 +47,15 @@ body {
 }
 
 @layer components {
-  /* Continuous gradient container */
-  .gradient-container {
+  /* Chat container with hidden gradient */
+  .chat-container {
     position: relative;
     overflow: hidden;
+    background-color: var(--background);
   }
   
-  /* Fixed-position gradient that doesn't move while scrolling */
-  .gradient-container::before {
+  /* Hidden gradient layer that will only be visible through message borders */
+  .chat-container::before {
     content: '';
     position: fixed;
     top: 0;
@@ -64,6 +65,8 @@ body {
     background: linear-gradient(135deg, var(--accentrd) 0%, var(--accentbl) 100%);
     pointer-events: none;
     z-index: -1;
+    /* Only visible through message borders */
+    visibility: hidden;
   }
   
   /* Base message styling */
@@ -75,7 +78,7 @@ body {
     max-width: 80%;
     
     /* Transparent border creates spacing for gradient to show through */
-    border: 1px solid transparent;
+    border: 2px solid transparent;
     
     /* Background only covers content area, not border */
     background-clip: padding-box;
@@ -100,8 +103,9 @@ body {
     mask-composite: exclude;
     -webkit-mask-composite: destination-out;
     
+    /* Make gradient visible only in border area */
+    background: linear-gradient(135deg, var(--accentrd) 0%, var(--accentbl) 100%);
     z-index: -1;
-    background: transparent;
   }
   
   /* Message positioning */
@@ -114,7 +118,7 @@ body {
   }
   
   .thinking {
-    @apply self-start bg-transparent text-[var(--background)] italic p-2;
+    @apply self-start bg-transparent text-[var(--foreground)] italic p-2;
   }
   
   .error {
