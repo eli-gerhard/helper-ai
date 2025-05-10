@@ -13,7 +13,7 @@ export class ChatService {
             console.log('Sending request to:', url);
             console.log('Model Input:', { messages, model });
             
-            const response = await fetch(this.apiUrl, {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
