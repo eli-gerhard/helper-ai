@@ -34,6 +34,8 @@ class LLMClient:
         
         # Create client with minimal configuration
         import openai
+        from openai import OpenAI
+        
         try:
             # Try creating with just the API key
             self.openai_client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
