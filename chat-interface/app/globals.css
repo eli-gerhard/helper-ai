@@ -3,24 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --background: #efeff8;
-  --foreground: #222228;
+  --background: #f8f8fe;
+  --foreground: #000000;
+  --textbox: #e1e1f2;
   --hover: #c7c7e0;
-  --accent_yl: #ffff00;
-  --accent_rd: #ff0000;
-  --accent_bl: #0000ff;
+  --accentyl: #ffcc00;
+  --accentrd: #dd0000;
+  --accentbl: #0000ff;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #222228;
     --foreground: #ffffff;
+    --textbox: #2e2e36;
     --hover: #363640;
-    --accent_yl: #ffff00;
-    --accent_rd: #ff0000;
-    --accent_bl: #0000ff;
+    --accentyl: #ffcc00;
+    --accentrd: #dd0000;
+    --accentbl: #0000ff;
   }
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
@@ -33,23 +35,27 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 @layer components {
   .user-message {
-    @apply self-end bg-[var(--background)] text-white border border-yellow-400 p-2 rounded-lg;
+      @apply self-end bg-[var(--background)] text-[var(--foreground)] border border-yellow-400 px-2 py-1 rounded-lg;
   }
   
   .assistant-message {
-    @apply self-start bg-[var(--background)] text-white border border-yellow-300 p-2 rounded-lg;
+    @apply self-start bg-[var(--background)] text-[var(--foreground)] border border-[var(--accentyl)] px-2 py-1 rounded-lg;
   }
   
   .thinking {
-    @apply self-start bg-transparent text-yellow-300 italic p-2;
+    @apply self-start bg-transparent text-[var(--background)] italic p-2;
   }
   
   .error {
-    @apply text-red-400 p-2.5 mt-2.5 rounded bg-red-100 border border-red-200;
+    @apply text-[var(--accentrd)] p-2 mt-2.5 rounded bg-red-100 border border-red-200;
   }
   
   /* Code block styling */
