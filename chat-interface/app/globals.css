@@ -10,9 +10,14 @@
   --accentyl: #ffcc00;
   --accentrd: #dd0000;
   --accentbl: #0000ff;
+  
+  /* Default gradient variables */
+  --gradient-pos-x: 50%;
+  --gradient-pos-y: 50%;
+  --gradient-angle: 135deg;
 }
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root {
     --background: #222228;
     --foreground: #ffffff;
@@ -22,7 +27,7 @@
     --accentrd: #dd0000;
     --accentbl: #0000ff;
   }
-} */
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -42,12 +47,35 @@ body {
 }
 
 @layer components {
+  /* Position-aware gradient styling */
+  .position-aware-gradient {
+    position: relative;
+    background-clip: padding-box !important;
+    border: 2px solid transparent !important;
+  }
+  
+  .position-aware-gradient::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(
+      var(--gradient-angle, 135deg),
+      var(--accentrd) 0%, 
+      var(--accentbl) 100%
+    );
+  }
+  
   .user-message {
-      @apply self-end bg-[var(--background)] text-[var(--foreground)] border border-yellow-400 px-2 py-1 rounded-lg;
+    @apply self-end bg-[var(--background)] text-[var(--foreground)] px-2 py-1 rounded-lg;
   }
   
   .assistant-message {
-    @apply self-start bg-[var(--background)] text-[var(--foreground)] border border-[var(--accentyl)] px-2 py-1 rounded-lg;
+    @apply self-start bg-[var(--background)] text-[var(--foreground)] px-2 py-1 rounded-lg;
   }
   
   .thinking {
