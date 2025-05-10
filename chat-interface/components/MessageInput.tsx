@@ -27,7 +27,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const handleTextareaInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = event.target;
     textarea.style.height = 'auto';
-    textarea.style.height = `${textarea.scrollHeight}px`;
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`; // Cap at 200px height
   };
   
   const handleSendMessage = () => {
@@ -43,12 +43,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
   
   return (
-    <div className="w-full bg-gray-900 border-t border-blue-600">
+    <div className="w-full bg-[var(--background)] border-t border-blue-600 flex-shrink-0">
       <div className="max-w-4xl mx-auto p-5">
         <div className="flex gap-2.5 items-end align-middle">
           <textarea 
             ref={textareaRef}
-            className="flex-1 p-3 border border-blue-600 rounded resize-none h-[60px] text-base max-h-[200px]"
+            className="flex-1 p-3 border border-blue-600 rounded resize-none h-[60px] text-base max-h-[200px] text-white"
             placeholder="Type your message here..."
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
@@ -58,7 +58,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           />
           
           <button 
-            className="p-3.5 bg-gray-900 text-red-600 border border-red-600 rounded cursor-pointer flex items-center justify-center hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-3.5 bg-[var(--background)] text-red-600 border border-red-600 rounded cursor-pointer flex items-center justify-center hover:bg-[var(--hover)] disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSendMessage}
             disabled={isWaitingForResponse || !userInput.trim()}
           >

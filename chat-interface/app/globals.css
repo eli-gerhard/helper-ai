@@ -2,17 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: #efeff8;
+  --foreground: #222228;
+  --hover: #c7c7e0;
+  --accent_yl: #ffff00;
+  --accent_rd: #ff0000;
+  --accent_bl: #0000ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #222228;
+    --foreground: #ffffff;
+    --hover: #363640;
+    --accent_yl: #ffff00;
+    --accent_rd: #ff0000;
+    --accent_bl: #0000ff;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* --font-sans: var(--font-geist-sans); */
+  /* --font-mono: var(--font-geist-mono); */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 @layer components {
   .user-message {
-    @apply self-end bg-gray-800 text-white border-2 border-yellow-400 p-4 rounded-lg;
+    @apply self-end bg-[var(--background)] text-white border border-yellow-400 p-2 rounded-lg;
   }
   
   .assistant-message {
-    @apply self-start bg-gray-800 text-white border-2 border-yellow-300 p-4 rounded-lg;
+    @apply self-start bg-[var(--background)] text-white border border-yellow-300 p-2 rounded-lg;
   }
   
   .thinking {
-    @apply self-start bg-transparent text-yellow-300 italic p-2.5;
+    @apply self-start bg-transparent text-yellow-300 italic p-2;
   }
   
   .error {
@@ -21,7 +54,7 @@
   
   /* Code block styling */
   pre {
-    @apply bg-gray-800 text-gray-300 p-4 rounded overflow-x-auto font-mono text-sm my-2.5;
+    @apply bg-[var(--background)] text-[var(--foreground)] p-2 rounded overflow-x-auto font-mono text-sm my-2.5;
   }
   
   code {
@@ -38,30 +71,10 @@
     .user-message, .assistant-message {
       @apply max-w-[90%];
     }
+
+    /* Ensure the app takes full height on mobile */
+    html, body {
+      @apply h-full overflow-hidden;
+    }
   }
-}
-
-:root {
-  --background: #1e1e25;
-  --foreground: #1e1e25;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  /* --font-sans: var(--font-geist-sans); */
-  /* --font-mono: var(--font-geist-mono); */
-}
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

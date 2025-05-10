@@ -13,14 +13,12 @@ import Image from 'next/image';
 export default function HomePage() {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState<boolean>(false);
-  // const [selectedModel, setSelectedModel] = useState<ModelType>('chat');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
   const [identityPrompt, setIdentityPrompt] = useState<string>('');
   const [queryPrompt, setQueryPrompt] = useState<Message>({role: 'developer', content: ''});
   const [questionPrompt, setQuestionPrompt] = useState<Message>({role: 'developer', content: ''});
   
-  const CHAT_MIN_WIDTH = 320;
   const chatService = new ChatService();
   const routing = new Routing();
   
@@ -28,8 +26,6 @@ export default function HomePage() {
   useEffect(() => {
     const loadPrompts = async () => {
       try {
-        // Use explicit backend URL - change this if your backend URL is different
-        // const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
         const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
         
         // Load identity prompt
@@ -82,7 +78,7 @@ export default function HomePage() {
     
     // Check screen size
     const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth - 250 < CHAT_MIN_WIDTH);
+      setIsSmallScreen(window.innerWidth < 1000);
     };
     
     window.addEventListener('resize', checkScreenSize);
@@ -160,54 +156,58 @@ export default function HomePage() {
   };
   
   return (
-    <div className="flex h-screen bg-gray-900 relative overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar 
-        isSidebarOpen={isSidebarOpen} 
-        toggleSidebar={toggleSidebar} 
-        isSmallScreen={isSmallScreen} 
-      />
-      
-      {/* Main content */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* Header bar */}
-        <div className="w-full bg-gray-900 border-b border-red-600">
-          <div className="flex items-center">
-            {!isSidebarOpen && (
-              <button 
-                onClick={toggleSidebar}
-                className="absolute p-2 m-2 rounded-md hover:bg-gray-800 transition-colors"
-                aria-label="Toggle menu"
-              >
-                <Menu className='stroke-white'/>
-              </button>
-            )}
-            
-            <div className="flex-1 flex justify-center">
-              <div className="w-24 h-auto py-3.5 relative">
-                <Image 
-                  src="/planetslogo.png" 
-                  alt="Logo" 
-                  width={96} 
-                  height={40} 
-                  priority 
-                />
+    <div className="flex flex-col h-screen w-screen bg-[var-(--background)] overflow-hidden">
+      <div className="flex h-full w-full relative">
+        {/* Sidebar */}
+        <Sidebar 
+          isSidebarOpen={isSidebarOpen} 
+          toggleSidebar={toggleSidebar} 
+          isSmallScreen={isSmallScreen} 
+        />
+        
+        {/* Main content */}
+        <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
+          {/* Header bar - fixed at top */}
+          <div className="w-full bg-[var(--background)] border-b border-red-600 flex-shrink-0">
+            <div className="flex items-center">
+              {!isSidebarOpen && (
+                <button 
+                  onClick={toggleSidebar}
+                  className="absolute p-2 m-2 rounded-md hover:bg-[var(--hover)] transition-colors"
+                  aria-label="Toggle menu"
+                >
+                  <Menu className='stroke-white'/>
+                </button>
+              )}
+              
+              <div className="flex-1 flex justify-center">
+                <div className="w-24 h-auto py-3.5 relative">
+                  <Image 
+                    src="/planetslogo.png" 
+                    alt="Logo" 
+                    width={96} 
+                    height={40} 
+                    priority 
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        {/* Chat container */}
-        <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl">
-          {/* Chat history */}
-          <ChatArea chatHistory={chatHistory} />
-        </div>
+          
+          {/* Chat container - scrollable middle section */}
+          <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl">
+            {/* Chat history */}
+            <ChatArea chatHistory={chatHistory} />
+          </div>
 
-        {/* Input area */}
-        <MessageInput 
-          onSendMessage={sendMessage} 
-          isWaitingForResponse={isWaitingForResponse} 
-        />
+          {/* Input area - fixed at bottom */}
+          <div className="flex-shrink-0 w-full">
+            <MessageInput 
+              onSendMessage={sendMessage} 
+              isWaitingForResponse={isWaitingForResponse} 
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

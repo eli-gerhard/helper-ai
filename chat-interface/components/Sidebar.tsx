@@ -17,7 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       <div 
-        className={`fixed md:relative z-10 h-full bg-gray-900 border-r border-white shadow-lg transition-all duration-300 ease-in-out ${
+        className={`fixed md:relative z-10 h-full bg-[var(--background)] border-r border-white shadow-lg transition-all duration-300 ease-in-out ${
           isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full overflow-hidden'
         }`}
       >
@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="py-[10px] px-5 border-b border-red-700 flex items-center">
               <button 
                 onClick={toggleSidebar} 
-                className="p-2 rounded-md hover:bg-gray-800 transition-colors"
+                className="p-2 rounded-md hover:bg-[var(--hover)] transition-colors"
                 aria-label="Close menu"
               >
                 <Menu className='stroke-white'/>
@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               <ul className="space-y-3">
                 {['Home', 'Conversations', 'Settings', 'Models', 'Account', 'Help'].map((item) => (
                   <li key={item}>
-                    <a href="#" className="block p-2 rounded hover:bg-gray-900 transition-colors text-white">
+                    <a href="#" className="block p-2 rounded hover:bg-[var(--hover)] transition-colors text-white">
                       {item}
                     </a>
                   </li>
