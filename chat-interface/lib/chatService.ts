@@ -8,7 +8,9 @@ export class ChatService {
 
     async sendMessage(messages: Message[], model: string): Promise<ChatResponse> {
         try {
-            console.log('Sending request to:', this.apiUrl);
+            const url = this.apiUrl.includes('/api/chat') ? this.apiUrl : `${this.apiUrl}/api/chat`;
+
+            console.log('Sending request to:', url);
             console.log('Model Input:', { messages, model });
             
             const response = await fetch(this.apiUrl, {
