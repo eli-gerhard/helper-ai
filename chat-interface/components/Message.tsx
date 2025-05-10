@@ -7,7 +7,6 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeHighlight from 'rehype-highlight';
-import useViewportPosition from '@/lib/useViewportPosition';
 // import 'highlight.js/styles/github-dark.css';
 
 interface MessageProps {
@@ -15,8 +14,6 @@ interface MessageProps {
 }
 
 const Message: React.FC<MessageProps> = ({ message }) => {
-  const { ref, gradientVars } = useViewportPosition();
-  
   // Remove code block fences if present
   const processContent = (content: string) => {
     // Check if content starts with ```markdown and ends with ```
@@ -53,12 +50,10 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   
   return (
     <div 
-      ref={ref}
-      className={`max-w-[80%] leading-relaxed position-aware-gradient ${
+      className={`message-bubble ${
         message.role === 'user' ? 'user-message' : 
         message.content === 'Thinking...' ? 'thinking' : 'assistant-message'
       }`}
-      style={gradientVars as React.CSSProperties}
     >
       {message.content === 'Thinking...' ? (
         message.content

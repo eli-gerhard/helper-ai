@@ -23,9 +23,9 @@
     --foreground: #ffffff;
     --textbox: #2e2e36;
     --hover: #363640;
-    --accentyl: #ffcc00;
-    --accentrd: #dd0000;
-    --accentbl: #0000ff;
+    /* --accentyl: #ffcc00; */
+    /* --accentrd: #dd0000; */
+    /* --accentbl: #0000ff; */
   }
 }
 
@@ -47,29 +47,64 @@ body {
 }
 
 @layer components {
-  /* Position-aware gradient styling */
-  .position-aware-gradient {
+  /* Continuous gradient container */
+  .gradient-container {
     position: relative;
-    background-clip: padding-box !important;
-    border: 2px solid transparent !important;
+    overflow: hidden;
   }
   
-  .position-aware-gradient::before {
+  /* Fixed-position gradient that doesn't move while scrolling */
+  .gradient-container::before {
     content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--accentrd) 0%, var(--accentbl) 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  /* Base message styling */
+  .message-bubble {
+    position: relative;
+    padding: 12px 16px;
+    border-radius: 16px;
+    margin-bottom: 8px;
+    max-width: 80%;
+    
+    /* Transparent border creates spacing for gradient to show through */
+    border: 1px solid transparent;
+    
+    /* Background only covers content area, not border */
+    background-clip: padding-box;
+    background-color: #222228;
+    color: #ffffff;
+  }
+  
+  /* Create "window" effect to see gradient through borders */
+  .message-bubble::before {
+    content: "";
     position: absolute;
     top: -2px;
     left: -2px;
     right: -2px;
     bottom: -2px;
-    z-index: -1;
     border-radius: inherit;
-    background: linear-gradient(
-      var(--gradient-angle, 135deg),
-      var(--accentrd) 0%, 
-      var(--accentbl) 100%
-    );
+    
+    /* This creates a "cutout" where the content is */
+    mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    
+    z-index: -1;
+    background: transparent;
   }
   
+  /* Message positioning */
   .user-message {
     @apply self-end bg-[var(--background)] text-[var(--foreground)] px-2 py-1 rounded-lg;
   }
