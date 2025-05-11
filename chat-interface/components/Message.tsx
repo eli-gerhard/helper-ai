@@ -50,7 +50,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   
   return (
     <div 
-      className={`message-bubble ${
+      className={`gradient-message ${
         message.role === 'user' ? 'user-message' : 
         message.content === 'Thinking...' ? 'thinking' : 'assistant-message'
       }`}
