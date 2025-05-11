@@ -43,12 +43,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
   
   return (
-    <div className="w-full bg-[var(--background)] border-t border-[var(--accentbl)] flex-shrink-0">
+    <div className="w-full bg-[var(--background)] border-t border-[var(--accentgr)] flex-shrink-0">
       <div className="max-w-4xl mx-auto p-2.5">
         <div className="flex gap-2">
           <textarea 
             ref={textareaRef}
-            className="flex-1 p-2 bg-[var(--textbox)] border border-[var(--accentbl)] rounded resize-none h-[60px] text-base max-h-[240px]"
+            className="flex-1 p-2 bg-[var(--textboxbl)] border border-[var(--accentgr)] rounded resize-none h-[60px] text-base max-h-[240px]"
             placeholder="Type your message here..."
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}

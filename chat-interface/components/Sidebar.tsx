@@ -17,26 +17,26 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       <div 
-        className={`fixed md:relative z-10 h-full bg-[var(--background)] border-r border-[var(--foreground)] shadow-lg transition-all duration-300 ease-in-out ${
+        className={`fixed md:relative z-10 h-full bg-[var(--background)] border-r border-[var(--accentgr)] shadow-lg transition-all duration-300 ease-in-out ${
           isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full overflow-hidden'
         }`}
       >
         {isSidebarOpen && (
           <div className="h-full overflow-y-auto">
-            <div className="py-[10px] px-5 border-b border-[var(--accentrd)] flex items-center">
+            <div className="py-[10px] px-5 border-b border-[var(--accentgr)] flex items-center">
               <button 
                 onClick={toggleSidebar} 
-                className="p-2 rounded-md hover:bg-[var(--hover)] transition-colors"
+                className="p-2 rounded-md hover:bg-[var(--background)] transition-colors"
                 aria-label="Close menu"
               >
-                <Menu className='stroke-[var(--foreground)]'/>
+                <Menu className='stroke-[var(--foreground)] hover:stroke-[var(--accentyl)]'/>
               </button>
             </div>
             <nav className="p-4">
               <ul className="space-y-3">
                 {['Home', 'Conversations', 'Settings', 'Models', 'Account', 'Help'].map((item) => (
                   <li key={item}>
-                    <a href="#" className="block p-2 rounded hover:bg-[var(--hover)] transition-colors text-[var(--foreground)]">
+                    <a href="#" className="block p-2 rounded hover:bg-[var(--background)] hover:text-[var(--accentyl)] transition-colors text-[var(--foreground)]">
                       {item}
                     </a>
                   </li>

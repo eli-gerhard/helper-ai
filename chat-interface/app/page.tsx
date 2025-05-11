@@ -168,15 +168,15 @@ export default function HomePage() {
         {/* Main content */}
         <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
           {/* Header bar - fixed at top */}
-          <div className="w-full bg-[var(--background)] border-b border-[var(--accentrd)] flex-shrink-0">
+          <div className="w-full bg-[var(--background)] border-b border-[var(--accentgr)] flex-shrink-0">
             <div className="flex items-center">
               {!isSidebarOpen && (
                 <button 
                   onClick={toggleSidebar}
-                  className="absolute p-2 m-2 rounded-md hover:bg-[var(--hover)] transition-colors"
+                  className="absolute p-2 m-2 rounded-md hover:bg-[var(--background)] transition-colors"
                   aria-label="Toggle menu"
                 >
-                  <Menu className='stroke-[var(--foreground)]'/>
+                  <Menu className='stroke-[var(--foreground)] hover:stroke-[var(--accentyl)]'/>
                 </button>
               )}
               

@@ -5,11 +5,13 @@
 :root {
   --background: #f8f8fe;
   --foreground: #000000;
-  --textbox: #e1e1f2;
+  --textboxbl: #ededfa;
+  --textboxrd: #faeded;
   --hover: #c7c7e0;
   --accentyl: #DDBB22;
   --accentrd: #dd0000;
   --accentbl: #0000ff;
+  --accentgr: #626262;
   --dark: #222228;
 }
 
@@ -17,11 +19,13 @@
   :root {
     --background: #222228;
     --foreground: #ffffff;
-    --textbox: #2e2e36;
+    --textboxbl: #2e2e36;
+    --textboxrd: #2f2a2c;
     --hover: #363640;
     --accentyl: #ffff00;
-    --accentrd: #dd0000;
-    --accentbl: #0000ff;
+    --accentrd: #ff4444;
+    --accentbl: #4444ff;
+    --accentgr: #888888;
     --dark: #222228;
   }
 }
@@ -46,11 +50,11 @@ body {
 @layer components {
   
   .user-message {
-    @apply self-end bg-[var(--background)] text-[var(--foreground)] px-2 py-1 rounded-lg;
+    @apply self-end bg-[var(--textboxbl)] text-[var(--foreground)] px-2 py-1 rounded-lg;
   }
   
   .assistant-message {
-    @apply self-start bg-[var(--background)] text-[var(--foreground)] px-2 py-1 rounded-lg;
+    @apply self-start bg-[var(--textboxrd)] text-[var(--foreground)] px-2 py-1 rounded-lg;
   }
   
   .thinking {

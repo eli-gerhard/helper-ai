@@ -49,9 +49,9 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   };
   
   return (
-    <div className={`max-w-[90%] rounded-[8.5px] bg-gradient-to-br
+    <div className={`max-w-[90%] rounded-[8.5px] bg-gradient-to-bl
       ${
-          message.role === 'user' ? 'self-end from-[var(--accentrd)] to-[var(--accentyl)]' : 
+          message.role === 'user' ? 'self-end from-[var(--accentbl)] to-[var(--accentrd)]' : 
           message.content === 'Thinking...' ? '' : 'self-start from-[var(--accentrd)] to-[var(--accentbl)]'
       }`}>
       <div 
