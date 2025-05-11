@@ -49,24 +49,30 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   };
   
   return (
-    <div 
-      className={`max-w-[80%] ${
-        message.role === 'user' ? 'user-message' : 
-        message.content === 'Thinking...' ? 'thinking' : 'assistant-message'
-      }`}
-    >
-      {message.content === 'Thinking...' ? (
-        message.content
-      ) : (
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
-        >
-          {processContent(message.content)}
-        </ReactMarkdown>
-        // processContent(message.content)
-        // message.content
-      )}
+    <div className={`max-w-[90%] rounded-[8.5px] bg-gradient-to-br
+      ${
+          message.role === 'user' ? 'self-end from-[var(--accentrd)] to-[var(--accentyl)]' : 
+          message.content === 'Thinking...' ? '' : 'self-start from-[var(--accentrd)] to-[var(--accentbl)]'
+      }`}>
+      <div 
+        className={`max-w-[100%] m-px ${
+          message.role === 'user' ? 'user-message' : 
+          message.content === 'Thinking...' ? 'thinking' : 'assistant-message'
+        }`}
+      >
+        {message.content === 'Thinking...' ? (
+          message.content
+        ) : (
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
+          >
+            {processContent(message.content)}
+          </ReactMarkdown>
+          // processContent(message.content)
+          // message.content
+        )}
+      </div>
     </div>
   );
 };

@@ -58,11 +58,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
           />
           
           <button 
-            className="p-1 bg-[var(--background)] text-[var(--accentyl)] rounded cursor-pointer flex items-center justify-center hover:bg-[var(--hover)] disabled:opacity-50" //disabled:cursor-not-allowed
+            className="p-0 bg-[var(--background)] text-[var(--accentyl)] rounded cursor-pointer flex items-center justify-center hover:bg-[var(--hover)] disabled:opacity-50" //disabled:cursor-not-allowed
             onClick={handleSendMessage}
             disabled={isWaitingForResponse || !userInput.trim()}
           >
-            <Send className='h-5 w-5'/>
+            <Send className='h-7 w-7 p-1'/>
           </button>
         </div>
       </div>
