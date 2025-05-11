@@ -50,7 +50,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   
   return (
     <div 
-      className={`gradient-message ${
+      className={`max-w-[80%] ${
         message.role === 'user' ? 'user-message' : 
         message.content === 'Thinking...' ? 'thinking' : 'assistant-message'
       }`}
