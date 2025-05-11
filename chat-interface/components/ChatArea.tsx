@@ -26,13 +26,13 @@ const ChatArea: React.FC<ChatAreaProps> = ({ chatHistory }) => {
   return (
     <div 
       ref={chatHistoryRef}
-      className="chat-container h-full w-full overflow-y-auto p-4 flex flex-col gap-4"
+      className="h-full w-full overflow-y-auto p-4 flex flex-col gap-4"
     >
       {chatHistory.filter(msg => msg.role !== 'system').map((message, index) => (
         <Message key={index} message={message} />
       ))}
       {/* Add a small spacer at the bottom to ensure there's room when scrolling to the bottom */}
-      <div className="h-2 w-full flex-shrink-0"></div>
+      {/* <div className="h-2 w-full flex-shrink-0"></div> */}
     </div>
   );
 };
