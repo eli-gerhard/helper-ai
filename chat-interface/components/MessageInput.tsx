@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
 
 interface MessageInputProps {
@@ -41,9 +41,16 @@ const MessageInput: React.FC<MessageInputProps> = ({
       textareaRef.current.style.height = 'auto';
     }
   };
+
+  // Focus on textarea when component mounts or when waiting for response changes
+  useEffect(() => {
+    if (!isWaitingForResponse && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [isWaitingForResponse]);
   
   return (
-    <div className="w-full bg-[var(--background)] border-t border-[var(--accentgr)] flex-shrink-0">
+    <div className="w-full bg-[var(--background)] border-t border-[var(--accentgr)] flex-shrink-0 sticky bottom-0 left-0 right-0 pb-safe">
       <div className="max-w-4xl mx-auto p-2.5">
         <div className="flex gap-2">
           <textarea 

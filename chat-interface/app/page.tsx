@@ -156,8 +156,8 @@ export default function HomePage() {
   };
   
   return (
-    <div className="flex flex-col h-screen w-screen bg-[var-(--background)] overflow-hidden">
-      <div className="flex h-full w-full relative">
+    <div className="flex flex-col h-[100dvh] w-screen bg-[var(--background)] overflow-hidden">
+      <div className="flex flex-1 relative w-full min-h-0">
         {/* Sidebar */}
         <Sidebar 
           isSidebarOpen={isSidebarOpen} 
@@ -166,7 +166,7 @@ export default function HomePage() {
         />
         
         {/* Main content */}
-        <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
+        <div className="flex-1 flex flex-col min-h-0 w-full">
           {/* Header bar - fixed at top */}
           <div className="w-full bg-[var(--background)] border-b border-[var(--accentgr)] flex-shrink-0">
             <div className="flex items-center">
@@ -182,9 +182,6 @@ export default function HomePage() {
               
               <div className="flex-1 flex justify-center">
               <div className= 'w-28 h-auto my-1.5 py-2 px-2 relative bg-[var(--dark)] rounded-3xl'>
-                {/* <div className= 'w-60 h-auto py-3.5 px-16 relative'
-                  style={{background: 'linear-gradient(to right, var(--background) 0%, var(--dark) 25%, var(--dark) 75%, var(--background) 100%'}}
-                > */}
                   <Image 
                     src="/planetslogo.png" 
                     alt="Logo" 
@@ -198,7 +195,7 @@ export default function HomePage() {
           </div>
           
           {/* Chat container - scrollable middle section */}
-          <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl">
+          <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl min-h-0">
             {/* Chat history */}
             <ChatArea chatHistory={chatHistory} />
           </div>

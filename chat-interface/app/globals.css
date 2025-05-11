@@ -37,6 +37,32 @@
   /* --font-mono: var(--font-geist-mono); */
 }
 
+/* Fix for mobile viewport height issues */
+html, body {
+  height: 100%;
+  position: relative;
+  overscroll-behavior-y: none;
+}
+
+/* Safe area insets for notched devices */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+}
+
+/* Fix for iOS viewport height bugs */
+@supports (-webkit-touch-callout: none) {
+  .h-\[100dvh\] {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Improve mobile touch interaction */
+@media (max-width: 768px) {
+  textarea, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -97,13 +123,14 @@ body {
   /* Firefox scrollbar */
   scrollbar-width: thin;
   scrollbar-color: var(--background) transparent;
+  transition: 100ms;
 }
 
 .custom-scrollbar:hover {
   /* Firefox - show thin scrollbar on hover */
   scrollbar-width: thin;
   scrollbar-color: var(--accentgr) transparent;
-  transition: 0.1s ease;
+  transition: 100ms;
 }
 
 /* .custom-scrollbar::-webkit-scrollbar-track {
