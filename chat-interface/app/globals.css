@@ -91,3 +91,50 @@ body {
     }
   }
 }
+
+/* Custom scrollbar styling */
+.custom-scrollbar {
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--background) transparent;
+}
+
+.custom-scrollbar:hover {
+  /* Firefox - show thin scrollbar on hover */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accentgr) transparent;
+  transition: 0.1s ease;
+}
+
+/* .custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+} */
+
+/* initially transparent thumb */
+/* .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  opacity: 0;
+  border-radius: 20px;
+  transition: 0.1s ease;
+} */
+
+/* Show scrollbar on hover for Webkit browsers */
+/* .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: var(--accentgr) transparent;
+} */
+
+/* Hide scrollbar buttons (arrows) */
+/* .custom-scrollbar::-webkit-scrollbar-button {
+  display: none;
+} */
+
+/* Hide scrollbar by default for Webkit browsers (Chrome, Safari, Edge) */
+/* .custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+} */
+
+/* show thin scrollbar on hover */
+/* .custom-scrollbar:hover::-webkit-scrollbar {
+  width: 6px;
+} */

@@ -26,7 +26,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({ chatHistory }) => {
   return (
     <div 
       ref={chatHistoryRef}
-      className="h-full w-full overflow-y-auto p-4 flex flex-col gap-4"
+      className="h-full w-full overflow-y-auto py-4 pl-3 pr-1 flex flex-col gap-4 custom-scrollbar"
     >
       {chatHistory.filter(msg => msg.role !== 'system').map((message, index) => (
         <Message key={index} message={message} />
