@@ -1,25 +1,54 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database (for local development)
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-chatapp}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
+
   # Backend API service (FastAPI)
   api:
     build: ./backend
     ports:
       - "8000:8000"
     env_file:
-      - ./backend/.env
+      - ./.env.local
     environment:
-      - ENV=development
-      - DEBUG=True
-      - CORS_ORIGINS=http://localhost:3000
+      - ENV=${ENV:-development}
+      - DEBUG=${DEBUG:-True}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_NAME=${DB_NAME:-chatapp}
     volumes:
       - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
+    networks:
+      - app_network
   
   # Frontend service (Next.js)
   frontend:
@@ -30,7 +59,18 @@ services:
       - ./chat-interface:/app
       - /app/node_modules
     environment:
-      - BACKEND_API_URL=http://api:8000/api/chat
-      - NEXT_PUBLIC_API_URL=/api/chat
+      - BACKEND_API_URL=http://api:8000
+      - NEXT_PUBLIC_API_URL=/api
+      - NEXT_PUBLIC_BACKEND_URL=http://api:8000
     depends_on:
       - api
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge
