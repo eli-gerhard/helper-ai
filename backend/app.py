@@ -329,7 +329,7 @@ async def chat(
     db: Session = Depends(get_db_session)
 ):
     try:
-         if not request.user_id:
+        if not request.user_id:
             # Create a temporary user ID
             request.user_id = "anonymous_user"  # or str(uuid.uuid4())
             logger.info(f"No user_id provided, using temporary: {request.user_id}")

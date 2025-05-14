@@ -84,7 +84,7 @@ body {
   }
   
   .thinking {
-    @apply self-start bg-transparent text-[var(--background)] italic p-2;
+    @apply self-start bg-transparent text-[var(--accentyl)] italic p-2;
   }
   
   .error {
