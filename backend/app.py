@@ -332,13 +332,13 @@ async def chat(
          if not request.user_id:
             # Create a temporary user ID
             request.user_id = "anonymous_user"  # or str(uuid.uuid4())
-            # logger.info(f"No user_id provided, using temporary: {request.user_id}")
+            logger.info(f"No user_id provided, using temporary: {request.user_id}")
             
         if not request.conversation_id:
             # Create a new conversation
             conversation = crud.create_conversation(db, user_id=request.user_id)
             request.conversation_id = conversation.id
-            # logger.info(f"Created new conversation: {request.conversation_id}")
+            logger.info(f"Created new conversation: {request.conversation_id}")
         
         # Convert Pydantic models to dictionaries
         messages = [msg.dict() for msg in request.messages]
