@@ -31,11 +31,11 @@ services:
       - ENV=${ENV:-development}
       - DEBUG=${DEBUG:-True}
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
-      - DB_HOST=postgres
-      - DB_PORT=5432
+      - DB_HOST=${DB_HOST:-postgres}
+      - DB_PORT=${DB_PORT:-5432}
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - DB_NAME=${DB_NAME:-chatapp}
+      - DB_NAME=${DB_NAME:-thisbeai}
     volumes:
       - ./backend:/app
     depends_on:
