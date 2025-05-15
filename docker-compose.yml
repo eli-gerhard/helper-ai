@@ -7,13 +7,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=${DB_USERNAME:-postgres}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
-      - POSTGRES_DB=${DB_NAME:-chatapp}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,14 +28,16 @@ services:
     env_file:
       - ./backend/.env
     environment:
-      - ENV=${ENV:-development}
-      - DEBUG=${DEBUG:-True}
-      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
-      - DB_HOST=${DB_HOST:-postgres}
-      - DB_PORT=${DB_PORT:-5432}
-      - DB_USERNAME=${DB_USERNAME:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - DB_NAME=${DB_NAME:-thisbeai}
+      - ENV=${ENV}
+      - DEBUG=${DEBUG}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+      - DATABASE_URL=${DATABASE_URL}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     volumes:
       - ./backend:/app
     depends_on:
