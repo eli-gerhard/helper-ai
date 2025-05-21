@@ -78,7 +78,6 @@ body {
   .user-message {
     @apply self-end bg-[var(--textboxbl)] text-[var(--foreground)] px-2 py-1 rounded-lg;
   }
-  
   .assistant-message {
     @apply self-start bg-[var(--textboxrd)] text-[var(--foreground)] px-2 py-1 rounded-lg;
   }
