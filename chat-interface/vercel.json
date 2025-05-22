@@ -10,7 +10,6 @@
     }
   },
   "env": {
-    "BACKEND_API_URL": "https://api.thisbeai.com",
-    "NEXT_PUBLIC_BACKEND_URL": "https://api.thisbeai.com"
+    "OPENAI_API_KEY": "@openai_api_key"
   }
 }
