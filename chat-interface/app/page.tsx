@@ -26,10 +26,8 @@ export default function HomePage() {
   useEffect(() => {
     const loadPrompts = async () => {
       try {
-        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-        
         // Load identity prompt
-        const identityResponse = await fetch(`${BACKEND_URL}/prompts/identityprompt`);
+        const identityResponse = await fetch('/api/prompts/identityprompt');
         if (identityResponse.ok) {
           const data = await identityResponse.json();
           setIdentityPrompt(data.content);
@@ -39,7 +37,7 @@ export default function HomePage() {
         }
         
         // Load query prompt
-        const queryResponse = await fetch(`${BACKEND_URL}/prompts/queryprompt`);
+        const queryResponse = await fetch('/api/prompts/queryprompt');
         if (queryResponse.ok) {
           const data = await queryResponse.json();
           const query: Message = {
@@ -53,7 +51,7 @@ export default function HomePage() {
         }
         
         // Load question prompt
-        const questionResponse = await fetch(`${BACKEND_URL}/prompts/questionprompt`);
+        const questionResponse = await fetch('/api/prompts/questionprompt');
         if (questionResponse.ok) {
           const data = await questionResponse.json();
           const question: Message = {

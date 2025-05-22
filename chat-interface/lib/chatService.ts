@@ -4,16 +4,14 @@ import { ChatRequest, ChatResponse, Message } from './types';
 
 export class ChatService {
     // Use environment variable with fallback
-    private readonly apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api/chat';
+    private readonly apiUrl = '/api/chat';
 
     async sendMessage(messages: Message[], model: string): Promise<ChatResponse> {
         try {
-            const url = this.apiUrl.includes('/api/chat') ? this.apiUrl : `${this.apiUrl}/api/chat`;
-
-            console.log('Sending request to:', url);
+            console.log('Sending request to:', this.apiUrl);
             console.log('Model Input:', { messages, model });
             
-            const response = await fetch(url, {
+            const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
