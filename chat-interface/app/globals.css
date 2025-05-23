@@ -167,7 +167,7 @@ body {
 
 .gradient-window-border {
   position: relative;
-  background: linear-gradient(to bottom, 
+  background: linear-gradient(to bottom right, 
     var(--accentrd) 0%, 
     var(--accentbl) 100%);
   
