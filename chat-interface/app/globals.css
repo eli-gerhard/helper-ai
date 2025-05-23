@@ -164,3 +164,25 @@ body {
 /* .custom-scrollbar:hover::-webkit-scrollbar {
   width: 6px;
 } */
+
+.gradient-window-border {
+  position: relative;
+  background: linear-gradient(to bottom, 
+    var(--accentrd) 0%, 
+    var(--accentbl) 100%);
+  
+  /* This is the key: gradient positioned relative to the entire viewport */
+  background-attachment: fixed;
+  
+  /* Fallback for browsers that don't support background-attachment: fixed well */
+  background-size: 100% 100%;
+}
+
+/* More reliable cross-browser approach */
+@supports not (background-attachment: fixed) {
+  .gradient-window-border {
+    background-attachment: scroll;
+    background-size: 100% 100%;
+    background-position: 0 0;
+  }
+}

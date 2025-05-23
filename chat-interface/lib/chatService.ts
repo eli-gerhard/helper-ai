@@ -8,7 +8,7 @@ export class ChatService {
 
     async sendMessage(messages: Message[], model: string): Promise<ChatResponse> {
         try {
-            console.log('Sending request to:', this.apiUrl);
+            // console.log('Sending request to:', this.apiUrl);
             console.log('Model Input:', { messages, model });
             
             const response = await fetch(this.apiUrl, {
