@@ -5,8 +5,8 @@
 :root {
   --background: #f8f8fe;
   --foreground: #000000;
-  --textboxbl: #ededfa;
-  --textboxrd: #faeded;
+  --textboxbl: #f6f6ff;
+  --textboxrd: #f9f6fc;
   --hover: #c7c7e0;
   --accentyl: #DDBB22;
   --accentrd: #dd0000;
@@ -19,8 +19,8 @@
   :root {
     --background: #222228;
     --foreground: #ffffff;
-    --textboxbl: #2e2e36;
-    --textboxrd: #2f2a2c;
+    --textboxbl: #202028;
+    --textboxrd: #222026;
     --hover: #363640;
     --accentyl: #ffff00;
     --accentrd: #ff4444;
